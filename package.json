@@ -1,0 +1,12 @@
+{
+  "name": "one-percent-better",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.13.3",
+    "mongoose": "^5.8.3"
+  },
+  "scripts": {
+    "dev": "nodemon server.js"
+  }
+}
