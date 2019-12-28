@@ -1,34 +1,38 @@
 const express = require("express")
+
+// set up bodyParser
+const bodyParser = require('body-parser')
+
+// set up the database
+const mongoose = require('mongoose')
+
+if (!mongoose.connection.db) {
+  console.log("connecting")
+  mongoose.connect(
+    "mongodb+srv://angelina124:trthipwgi@one-percent-better-vgovl.mongodb.net/test?retryWrites=true&w=majority",
+    {
+      keepAlive: true,
+      reconnectTries: Number.MAX_VALUE,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+      // autoIndex: false
+    }
+  )
+}
+
 const app = express()
 
-// import models
-const Post = require('./models/post')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
-// setup mongo
-const MongoClient = require('mongodb').MongoClient
+// app.get('/', (req, res) => {
+//   res.json({ hello: true })
+// })
 
-var db
+app.use('/api/posts/', require('./routing/post-route'))
 
-MongoClient.connect('mongodb+srv://angelina124:trthipwgi@one-percent-better-vgovl.mongodb.net/test?retryWrites=true&w=majority', (err, client) => {
-  if (err) return console.log(err)
-  db = client.db('one-percent-better') // whatever your database name is
-
-  // creates express server
-  app.listen(3000, () => {
-    console.log('listening on 3000')
-  })
-})
-
-app.post('/posts', (req, res) => {
-  var post = new Post({
-    title : req.body.title,
-    content: req.body.content,
-    tags: req.body.tags ? req.body.tags : [],
-    percentBetter: req.body.Number
-  })
-
-  post.save((err) => {
-    if(err)
-      return err
-  })
+// creates express server
+app.listen(3000, () => {
+  console.log('listening on 3000')
 })
