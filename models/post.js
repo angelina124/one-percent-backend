@@ -21,7 +21,13 @@ const PostSchema = new Schema(
     percentBetter: {
       type: Number,
       default: 0
-    }
+    },
+    books: [
+      {
+        type: String,
+        required: false
+      }
+    ]
   },
   {
     timestamps: true

@@ -6,6 +6,9 @@ const bodyParser = require('body-parser')
 // set up the database
 const mongoose = require('mongoose')
 
+// set up cors to allow cross-origin requests
+const cors = require('cors')
+
 if (!mongoose.connection.db) {
   console.log("connecting")
   mongoose.connect(
@@ -16,19 +19,19 @@ if (!mongoose.connection.db) {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false
-      // autoIndex: false
     }
   )
 }
 
 const app = express()
 
-app.use(bodyParser.urlencoded({ extended: true }))
+// to allow parsing of request bodies
+// set up bodyParser
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// app.get('/', (req, res) => {
-//   res.json({ hello: true })
-// })
+// to allow requests from localhost:3001
+app.use(cors({origin:["http://localhost:3001"]}))
 
 app.use('/api/posts/', require('./routing/post-route'))
 

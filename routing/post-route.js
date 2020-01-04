@@ -6,10 +6,10 @@ const Post = require('../models/post')
 
 router.route('/')
   .get((req, res) => {
-    Post.find((err, posts) => {
+    Post.find().sort({updatedAt : -1 }).exec((err, data) => {
       if(err) res.json(err)
       else{
-        res.json({data: posts, success: true})
+        res.json({data: data})
       }
     })
   })
@@ -19,13 +19,14 @@ router.route('/')
       title : req.body.title,
       content: req.body.content,
       tags: req.body.tags ? req.body.tags : [],
-      percentBetter: req.body.Number
+      percentBetter: req.body.Number,
+      books: req.body.books ? req.body.books : []
     })
 
     post.save((err) => {
       if(err)
         res.json({error: true})
-      return res.json({success: true})
+      res.json({success: true})
     })
   })
 
