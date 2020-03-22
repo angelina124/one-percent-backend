@@ -14,7 +14,7 @@ const TagSchema = new Schema(
     posts: [
       {
         type: Schema.ObjectId,
-        ref: 'Tag',
+        ref: 'Post',
         required: false
       }
     ]

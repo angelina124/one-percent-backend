@@ -84,7 +84,6 @@ router.route('/')
     var post = new Post({
       title : title,
       content: content,
-      tags: tags,
       percentBetter: percentBetter,
       books: books ? books : []
     })
@@ -95,7 +94,45 @@ router.route('/')
         res.json({error: true})
       }
       else {
-        console.log(post)
+        let postID = post._id
+
+        tag_list = tags.split(", ")
+
+        tag_list.forEach((tag_name => {
+
+          Tag.findOne({name: tag_name}).exec((err, tag) => {
+              if(!err && tag != null){
+                posts = tag.posts ? tag.posts : []
+                posts.push(postID)
+
+                tag.count = tag.count + 1,
+                tag.posts = posts
+              } else{
+                tag = new Tag({
+                  name: tag_name,
+                  posts: [postID]
+                })
+              }
+              tag.save((err) => {
+                if(err){
+                  console.log(err)
+                  res.json({error: true})
+                } else {
+                  let tags = post.tags
+                  tags.push(tag)
+                  post.save((err) => {
+                    if(err){
+                      console.log(err)
+                      res.json({error: true})
+                    } else{
+                      console.log(post)
+                    }
+                  })
+                }
+              })
+            })
+        }))
+
         res.json({success: true})
       }
     })
