@@ -27,6 +27,12 @@ const PostSchema = new Schema(
         type: String,
         required: false
       }
+    ],
+    sources: [
+      {
+        type: String,
+        required: false
+      }
     ]
   },
   {
