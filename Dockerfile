@@ -15,6 +15,6 @@ RUN npm install react-scripts@3.0.1 -g --silent
 # Bundle app source
 COPY . .
 
-EXPOSE 80
+EXPOSE 5000
 
 CMD [ "node", "server.js" ]
