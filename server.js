@@ -32,7 +32,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // to allow requests from localhost:3001
-app.use(cors({origin:["http://localhost:3001"]}))
+app.use(cors({origin:["http://localhost"]}))
+//app.use(cors())
 
 app.use('/api/posts/', require('./routing/post-route'))
 

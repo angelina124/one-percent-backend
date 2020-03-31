@@ -10,8 +10,7 @@ const {ObjectId} = mongoose
 const Post = require('../models/post')
 const Tag = require('../models/tag')
 
-let filePort = 'http://localhost:3000';
-
+// let filePort = 'http://localhost:3000';
 
 router.route('/')
   .get((req, res) => {
