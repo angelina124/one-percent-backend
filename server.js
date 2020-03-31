@@ -6,10 +6,9 @@ const bodyParser = require('body-parser')
 // set up the database
 const mongoose = require('mongoose')
 
+const constants = require('./constants.js')
 // set up cors to allow cross-origin requests
 const cors = require('cors')
-
-import constants
 
 if (!mongoose.connection.db) {
   console.log("connecting")
@@ -33,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // to allow requests from localhost:3001
-app.use(cors({origin:[constants.FRONTEND_ADDRESS]}))
+app.use(cors({origin:["http://localhost:3001"]}))
 
 app.use('/api/posts/', require('./routing/post-route'))
 
