@@ -17,6 +17,13 @@ const TagSchema = new Schema(
         ref: 'Post',
         required: false
       }
+    ],
+    projects: [
+      {
+        type: Schema.ObjectId,
+        ref: 'Project',
+        required: false
+      }
     ]
   },
   {

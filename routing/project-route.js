@@ -7,26 +7,26 @@ const mongoose = require('mongoose');
 const {ObjectId} = mongoose
 
 // import models
-const Post = require('../models/post')
+const Project = require('../models/project')
 const Tag = require('../models/tag')
 
 // let filePort = 'http://localhost:3000';
 
-function updateTags(postID, tags){
+function updateTags(projectID, tags){
   let tagPromise = new Promise((resolve, reject) => {
     var tag_ids = []
     for(var i = 0; i < tags.length; i++){
       var tag_name = tags[i]
       Tag.findOne({name: tag_name}).exec((err, tag) => {
           if(!err && tag != null){
-            posts = tag.posts ? tag.posts : []
-            posts.push(postID)
+            projects = tag.projects ? tag.projects : []
+            projects.push(projectID)
             tag.count = tag.count + 1,
-            tag.posts = posts
+            tag.projects = projects
           } else{
             tag = new Tag({
               name: tag_name,
-              posts: [postID]
+              projects: [projectID]
             })
           }
           tag.save((err,tag) => {
@@ -48,7 +48,7 @@ function updateTags(postID, tags){
 
 router.route('/')
   .get((req, res) => {
-    Post.find().sort({createdAt : -1 }).exec((err, data) => {
+    Project.find().sort({createdAt : -1 }).exec((err, data) => {
       if(err) res.json(err)
       else{
         res.json({data: data})
@@ -56,39 +56,38 @@ router.route('/')
     })
   })
    .post((req, res) => {
-    const {title, tags, content, percentBetter, books} = req.body
+      const {title, about, gitRepo, tags} = req.body
 
-    var post = new Post({
-      title : title,
-      content: content,
-      percentBetter: percentBetter,
-      books: books ? books : [],
-      tags: []
-    })
+      var project = new Project({
+        title : title,
+        about: about,
+        gitRepo: gitRepo,
+        tags: []
+      })
 
-    let postID = post._id
+      let projectID = project._id
 
-    tag_list = tags.split(", ")
+      tag_list = tags.split(", ")
 
-    updateTags(postID, tag_list)
-      .then(
-        (tag_ids) => {
-          post.tags = tag_ids
-          
-          post.save((err) => {
-            if(err){
-              console.log(err)
-              res.json({error: true})
-            }
-            else {
-              res.json({success: true})
-            }
+      updateTags(projectID, tag_list)
+        .then(
+          (tag_ids) => {
+            project.tags = tag_ids
+
+            project.save((err) => {
+              if(err){
+                console.log(err)
+                res.json({error: true})
+              }
+              else {
+                res.json({success: true})
+              }
+            })
           })
-        })
-    .catch((error) => {
-      console.log(error)
-      res.json({error: true})
-    })
+      .catch((error) => {
+        console.log(error)
+        res.json({error: true})
+      })
     })
 
 module.exports = router

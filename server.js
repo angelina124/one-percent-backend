@@ -32,10 +32,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // to allow requests from localhost:3001
-app.use(cors({origin:["http://www.booksandbash.com"]}))
+app.use(cors(/*{origin:["http://www.booksandbash.com"]}*/))
 //app.use(cors())
 
 app.use('/api/posts/', require('./routing/post-route'))
+app.use('/api/projects/', require('./routing/project-route'))
 
 // creates express server
 app.listen(5000, () => {
